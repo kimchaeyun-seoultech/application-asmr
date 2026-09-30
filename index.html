@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>App Notification Interaction</title>
+   <style>
+      body {
+         margin: 0;
+         height: 100vh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background-color: #f0f2f5; 
+      }
+
+      .dock-container {
+         display: flex;
+         gap: 20px; 
+         align-items: flex-end; 
+      }
+
+      .icon-wrapper {
+         position: relative;
+         display: inline-block;
+         cursor: pointer;
+         transition: transform 0.3s ease; 
+      }
+
+      .icon-wrapper.active {
+         transform: scale(1.3); 
+         transform-origin: bottom center; 
+      }
+
+      .app-icon {
+         width: 100px;
+         height: 100px;
+         border-radius: 22px;
+         object-fit: cover;
+         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      }
+
+      .badge {
+         position: absolute;
+         top: -6px;
+         right: -6px;
+         background-color: #ff3b30;
+         color: white;
+         font-size: 13px;
+         font-weight: bold;
+         padding: 3px 7px;
+         border-radius: 100px;
+         box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+         display: none;
+      }
+   </style>
+</head>
+<body>
+
+    <div class="dock-container">
+        <div class="icon-wrapper" id="kakaoContainer">
+            <img src="kakao_default.jpg" id="kakaoIcon" class="app-icon" alt="카카오톡">
+            <span class="badge" id="kakaoBadge">1</span>
+        </div>
+
+        <div class="icon-wrapper" id="daangnContainer">
+            <img src="daangn_default.jpg" id="daangnIcon" class="app-icon" alt="당근마켓">
+            <span class="badge" id="daangnBadge">1</span>
+        </div>
+
+        <div class="icon-wrapper" id="discordContainer">
+            <img src="discord_default.jpg" id="discordIcon" class="app-icon" alt="디스코드">
+            <span class="badge" id="discordBadge">1</span>
+        </div>
+
+        <div class="icon-wrapper" id="instaContainer">
+            <img src="insta_default.jpg" id="instaIcon" class="app-icon" alt="인스타그램">
+            <span class="badge" id="instaBadge">1</span>
+        </div>
+
+        <div class="icon-wrapper" id="imessageContainer">
+            <img src="imessage_default.jpg" id="imessageIcon" class="app-icon" alt="메시지">
+            <span class="badge" id="imessageBadge">1</span>
+        </div>
+    </div>
+
+    <audio src="katalk.mp3" id="kakaoSnd"></audio>
+    <audio src="daangn.mp3" id="daangnSnd"></audio>
+    <audio src="discord.mp3" id="discordSnd"></audio>
+    <audio src="insta.mp3" id="instaSnd"></audio>
+    <audio src="imessage.mp3" id="imessageSnd"></audio>
+
+    <script>
+        function setupApp(containerId, iconId, badgeId, sndId, defaultImg, chatImg) {
+            let state = "off";
+            let container = document.getElementById(containerId);
+            let icon = document.getElementById(iconId);
+            let badge = document.getElementById(badgeId);
+            let snd = document.getElementById(sndId);
+
+            container.onclick = function() {
+                if (state == "off") {
+                    snd.play();
+                    icon.src = chatImg; 
+                    badge.style.display = "block";
+                    container.classList.add("active"); 
+                    state = "on";
+                } else {
+                    snd.pause();
+                    snd.currentTime = 0;
+                    icon.src = defaultImg; 
+                    badge.style.display = "none";
+                    container.classList.remove("active"); 
+                    state = "off";
+                }
+            };
+        }
+
+        setupApp("kakaoContainer", "kakaoIcon", "kakaoBadge", "kakaoSnd", "kakao_default.jpg", "kakao_chat.jpg");
+        setupApp("daangnContainer", "daangnIcon", "daangnBadge", "daangnSnd", "daangn_default.jpg", "daangn_chat.jpg");
+        setupApp("discordContainer", "discordIcon", "discordBadge", "discordSnd", "discord_default.jpg", "discord_chat.jpg");
+        setupApp("instaContainer", "instaIcon", "instaBadge", "instaSnd", "insta_default.jpg", "insta_chat.jpg");
+        setupApp("imessageContainer", "imessageIcon", "imessageBadge", "imessageSnd", "imessage_default.jpg", "imessage_chat.jpg");
+    </script>
+</body>
+</html>
